@@ -16,7 +16,21 @@ def category_libraries(request, category):
     return render(request, "libraries/index.html", {"category": category})
 
 
+#####################################3
+def ConfrimBook(request, id):
+    book = Book.objects.get(id=id, is_published=1)
+    logger.success(request.user)
+    if request.method == "POST":
+        book.user.add(request.user)
+        book.is_published = 0
+        book.save()
+        return redirect("index")
+    return render(request, "libraries/confrim.html", {"book": book})
 
+def DetailBook(request, id):
+    book = Book.objects.get(id=id, is_published=1)
+    return render(request, "libraries/detail.html", {"book": book})
+#####################################3
 
 class RegisterUser(DefaultFormtMixin, View):
     template = "registration/register.html"
@@ -33,6 +47,3 @@ class AddBook(DefaultFormtMixin, View):
     form = BookPublishedForm
     reverse_url = "index"
 
-def DetailBook(request, id):
-    book = Book.objects.get(id=id)
-    return render(request, "libraries/detail.html", {"book": book})

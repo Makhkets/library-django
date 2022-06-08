@@ -11,13 +11,16 @@ class Book(models.Model):
     time_update = models.DateTimeField(auto_now=True, verbose_name="Время изменения")
     is_published = models.BooleanField(default=True, verbose_name="Публикация")
     category = models.ForeignKey("Category", on_delete=models.PROTECT, verbose_name="Категории")
-    user = models.ForeignKey(get_user_model(), on_delete=models.PROTECT, null=True, blank=True, verbose_name="Пользователь книги")
+    user = models.ManyToManyField(get_user_model(), null=True, blank=True, related_name="book", verbose_name="Пользователь книги")
 
     def __str__(self):
         return self.title
     
     def get_absolute_url(self):
         return reverse('view_book', kwargs={'id': self.pk})
+
+    def get_absolute_url2(self):
+        return reverse('confrim_book', kwargs={"id": self.pk})
 
     class Meta:
         verbose_name = "Книга"

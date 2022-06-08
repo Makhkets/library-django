@@ -1,7 +1,8 @@
 {% extends 'base.html' %}
+{% load static %}
 {% load libraries_tags %}
 
-{% block title %} Книга - {{ book.title }} {% endblock %}
+{% block title %} Подтверждение {% endblock %}
 
 {% block content %}
 <style>
@@ -17,10 +18,13 @@
                     </div>
                     <div class="two" style="margin-left: 30px;">
                         <h2 style="color:white">{{ book.title }}</h2>
-                        <p style="color:rgb(156, 156, 156)">{{ book.description|truncatechars:2500 }}</p>
+                        <p style="color:rgb(156, 156, 156)">{{ book.description|truncatechars:2000 }}</p>
                     </div>
                 </div>
-                <p style="color:rgb(156, 156, 156)">{{ book.description|slice:"2500:" }}</p>
+                <form method="post">
+                    {% csrf_token %}
+                    <button class="btn btn-warning" style="margin-top:25px; width: 100%">Подтвердить</button>
+                </form>
                 
                 <!-- <h3>{{ book.category.name }}</h3>
                 <h3>published at: {{ book.time_create }}</h3> -->
