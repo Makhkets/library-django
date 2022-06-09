@@ -26,8 +26,8 @@ SECRET_KEY = 'django-insecure-lp@m6_-emz)y0962#)q+nolvkhzy!5z*f4(@4ywiene!p=rsw2
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["127.0.0.1"]
-
+ALLOWED_HOSTS = ["127.0.0.1", "f384-188-0-188-232.eu.ngrok.io"]
+CSRF_TRUSTED_ORIGINS = ['https://f384-188-0-188-232.eu.ngrok.io']
 
 # Application definition
 
@@ -127,8 +127,10 @@ STATICFILES_DIRS = [
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+MEDIA_URL = "/media/"
 LOGIN_REDIRECT_URL = 'index'
 LOGIN_URL = '/accounts/login/'
+AUTH_USER_MODEL = 'libraries.User'
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
-MEDIA_URL = "/media/"
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+BOT_TOKEN = "5381642982:AAH1kYcy9WA6wCrHCrunr4Yf-O_zXrvSqoo"

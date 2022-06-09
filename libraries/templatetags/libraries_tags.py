@@ -7,10 +7,14 @@ from loguru import logger
 register = template.Library()
 
 @register.simple_tag()
-def get_books(request, selected=0):
+def get_books(request, selected=0, filter=None):
     search_query = request.GET.get("search", "")
     if search_query:
         return Book.objects.filter(Q(title__icontains=search_query) | Q(description__icontains=search_query)).filter(is_published=1)
+    
+    if filter:
+        return Book.objects.filter(is_published=0)
+
     if selected == 0:
         return Book.objects.filter(is_published=1)
     else:

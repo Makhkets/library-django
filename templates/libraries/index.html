@@ -11,7 +11,6 @@
     body {background-color:#1e2124;}
     </style>
     <div class="mycontainer">
-    
 
         {% show_categories category %}
         
@@ -27,7 +26,7 @@
                         <p class="card-text" style="margin-top: 2vh; color: rgb(156, 156, 156);">{{ book.description|truncatechars:70 }}</p>
                         <div class="flex__center__elements" style="display: flex; justify-content: center; align-items: center;">
                             <a href="{{ book.get_absolute_url }}" class="btn btn-primary">Подробнее</a>
-                            <a href="{{ book.get_absolute_url2 }}" class="btn btn-success" style="margin-left: 15px;">Взять с собой</a>
+                            <a href="{{ book.confrim_book }}" class="btn btn-success" style="margin-left: 15px;">Взять с собой</a>
                         </div>
                     </div>
                 </div>
@@ -46,7 +45,7 @@
                             <p class="card-text" style="margin-top: 2vh; color: rgb(156, 156, 156);">{{ book.description|truncatechars:70 }}</p>
                             <div class="flex__center__elements" style="display: flex; justify-content: center; align-items: center;">
                                 <a href="{{ book.get_absolute_url }}" class="btn btn-primary">Подробнее</a>
-                                <a href="{{ book.get_absolute_url2 }}" class="btn btn-success" style="margin-left: 15px;">Взять с собой</a>
+                                <a href="{{ book.confrim_book }}" class="btn btn-success" style="margin-left: 15px;">Взять с собой</a>
                             </div>
                         </div>
                         </div>
