@@ -11,6 +11,7 @@ urlpatterns = [
     path('book/<int:id>/delete/', DeleteBook, name="delete_book"),
     path('book/<int:id>/notify/', NotifyBook, name="notify_book"),
 
+    path('contact', contact, name='contact'),
     path('profile/', profile, name="profile"),
     path('admin/', AdminView, name="admin"),
     path('category/<int:category>', category_libraries, name="view_category"),

@@ -1,7 +1,9 @@
 from django import template
 from django.db.models import Q
+from django.core.paginator import Paginator
 
 from libraries.models import *
+
 from loguru import logger
 
 register = template.Library()
@@ -13,12 +15,22 @@ def get_books(request, selected=0, filter=None):
         return Book.objects.filter(Q(title__icontains=search_query) | Q(description__icontains=search_query)).filter(is_published=1)
     
     if filter:
-        return Book.objects.filter(is_published=0)
+        books = Book.objects.filter(is_published=0)
+        paginator = Paginator(books, 3)
+        page_number = request.GET.get("page")
+        return paginator.get_page(page_number)
 
     if selected == 0:
-        return Book.objects.filter(is_published=1)
+
+        books = Book.objects.filter(is_published=1)
+        paginator = Paginator(books, 3)
+        page_number = request.GET.get("page")
+        return paginator.get_page(page_number)
     else:
-        return Book.objects.filter(category__pk=selected).filter(is_published=1).all()
+        books = Book.objects.filter(category__pk=selected).filter(is_published=1).all()
+        paginator = Paginator(books, 3)
+        page_number = request.GET.get("page")
+        return paginator.get_page(page_number)
 
 @register.inclusion_tag(filename="user_tags/categories_list.html")
 def show_categories(selected=0):

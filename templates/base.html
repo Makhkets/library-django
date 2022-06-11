@@ -40,6 +40,11 @@
                   <li class="nav-item">
                     <a class="nav-link" href="{% url 'add_book' %}" style="color: white;">Add book</a>
                   </li>
+
+                  
+                  <li class="nav-item">
+                    <a class="nav-link" href="{% url 'contact' %}" style="color: white;">Contact me</a>
+                  </li>
                   
                   {% if request.user.is_authenticated %}
                   <li class="nav-item">

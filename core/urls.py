@@ -31,7 +31,8 @@ urlpatterns = [
     path('accounts/login/', LoginUser.as_view(), name='login'),
     path('accounts/register/', RegisterUser.as_view(), name='register'),
     path('accounts/', include('django.contrib.auth.urls')),
-    path('libraries/', include('libraries.urls'))
+    path('libraries/', include('libraries.urls')),
+    path('captcha/', include('captcha.urls')),
 ]
 
 if settings.DEBUG:

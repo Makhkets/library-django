@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import AuthenticationForm 
 
+from captcha.fields import CaptchaField
 from .models import *
 
 class LoginForm(AuthenticationForm):
@@ -41,3 +42,10 @@ class BookPublishedForm(forms.ModelForm):
                 "class": "form-control",
             }),
         }
+
+class ContactForm(forms.Form):
+    content = forms.CharField(max_length=10000, widget=forms.Textarea(attrs={
+        "class": "form-control"
+    }))
+    
+    captcha = CaptchaField()

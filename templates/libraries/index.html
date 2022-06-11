@@ -10,6 +10,8 @@
     <style>
     body {background-color:#1e2124;}
     </style>
+
+
     <div class="mycontainer">
 
         {% show_categories category %}
@@ -31,6 +33,51 @@
                     </div>
                 </div>
                     {% endfor %}
+
+                    <nav aria-label="..." style="margin-left: 30px; margin-top: 40px;">
+                        <ul class="pagination">
+    
+    
+                            {% if books.has_previous %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ books.previous_page_number }}">Previous</a>
+                                  </li>
+                            {% else %}
+                                <li class="page-item disabled">
+                                    <span class="page-link">Previous</span>
+                                </li>
+                            {% endif %}
+    
+    
+         
+    
+                            
+                            {% if books.has_previous %}
+                                <li class="page-item"><a class="page-link" href="?page={{ books.previous_page_number }}">{{ books.previous_page_number }}</a></li>
+                            {% endif %}
+    
+                            <li class="page-item active" aria-current="page">
+                              <span class="page-link">{{ books.number }}</span>
+                            </li>
+                            
+                            
+                            {% if books.has_next %}
+                                <li class="page-item"><a class="page-link" href="?page={{ books.next_page_number }}">{{ books.next_page_number }}</a></li>
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ books.next_page_number }}">Next</a>
+                                    </li>
+                            {% else %}
+                                <li class="page-item disabled">
+                                    <span class="page-link">Next</span>
+                                </li>
+                            {% endif %}
+    
+    
+                        </ul>
+                    </nav>
+    
+
+
                 </div>
           </div>
           {% else %}
@@ -50,14 +97,13 @@
                         </div>
                         </div>
                     {% endfor %}
-                    
                 </div>
+                
+
+
             </div>
         {% endif %}
-    </div>
-
-
-        
+    </div>    
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
     {% endblock %}
     

@@ -38,7 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'libraries'
+
+    'captcha',
+    'libraries',
 ]
 
 MIDDLEWARE = [
@@ -134,3 +136,6 @@ AUTH_USER_MODEL = 'libraries.User'
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 BOT_TOKEN = "5381642982:AAH1kYcy9WA6wCrHCrunr4Yf-O_zXrvSqoo"
+CHAT_ID_ADMIN = "5285375327"
+RECAPTCHA_PUBLIC_KEY = 'MyRecaptchaKey123'
+RECAPTCHA_PRIVATE_KEY = 'MyRecaptchaPrivateKey456'

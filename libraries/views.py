@@ -4,19 +4,26 @@ from django.views.generic import View
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.paginator import Paginator
 
 import requests
 
 from libraries.utils import *
 from libraries.forms import *
 from libraries.models import *
-from core.settings import BOT_TOKEN
+from core.settings import BOT_TOKEN, CHAT_ID_ADMIN
 
 # Create your views here.
 
 
 
-def index_libraries(request):
+def index_libraries(request): 
+    books = Book.objects.all()
+    
+    paginator = Paginator(books, 2)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number) 
+
     return render(request, "libraries/index.html", {"category": 0})
 
 def category_libraries(request, category):
@@ -75,9 +82,17 @@ def profile(request):
             user.save()
             return render(request, "libraries/profile.html", {"success": "Данные успешно проверены и сохранены", "error": ""})
         else: return render(request, "libraries/profile.html", {"success": "", "error": "Неправильно веден айди или бот не активирован"}) 
-            
-
     return render(request, "libraries/profile.html")  
+
+@login_required
+def contact(request):
+    if request.method == "POST":
+        f = ContactForm(request.POST)
+        if f.is_valid():
+            requests.get(f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage?chat_id={CHAT_ID_ADMIN}&text=💡 Сообщение от: {request.user.username}\n\n{request.POST.get('content')}")
+            return render(request, "libraries/contact.html", {"form": ContactForm(), "success": "Ваше сообщение отправлено"})
+        else: return render(request, "libraries/contact.html", {"form": ContactForm(), "error": "Вы неправильно ввели капчу"})
+    return render(request, "libraries/contact.html", {"form": ContactForm()})
 
 class RegisterUser(DefaultFormtMixin, View):
     template = "registration/register.html"
