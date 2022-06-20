@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load libraries_tags %}
+
+    {% block title %}
+        Главная
+    {% endblock %}
+
+    {% block content %}
+    <style>
+    body {background-color:#1e2124;}
+    </style>
+
+
+    <div class="mycontainer">
+
+        {% show_categories category %}
+        
+        {% if category == 0 %}
+          {% get_books request=request as books %}
+          <div class="container">
+            <div class="row row-cols-2">
+                  {% for book in books %}
+                  <div class="cards" style="width: 18rem; margin-left: 30px; margin-top: 30px;">
+                    <img src="{{ book.photo.url }}" class="card-img-top" alt="Фото не загрузилось" style="width: 100%; height: 40vh;">
+                    <div class="card-body">
+                        <h5 class="card-title" style="margin-top: 2vh; color: white;">{{ book.title }}</h5>
+                        <p class="card-text" style="margin-top: 2vh; color: rgb(156, 156, 156);">{{ book.description|truncatechars:70 }}</p>
+                        <div class="flex__center__elements" style="display: flex; justify-content: center; align-items: center;">
+                            <a href="{{ book.get_absolute_url }}" class="btn btn-primary">Подробнее</a>
+                            <a href="{{ book.confrim_book }}" class="btn btn-success" style="margin-left: 15px;">Взять с собой</a>
+                        </div>
+                    </div>
+                </div>
+                    {% endfor %}
+
+                    <nav aria-label="..." style="margin-left: 30px; margin-top: 40px;">
+                        <ul class="pagination">
+    
+    
+                            {% if books.has_previous %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ books.previous_page_number }}">Previous</a>
+                                  </li>
+                            {% else %}
+                                <li class="page-item disabled">
+                                    <span class="page-link">Previous</span>
+                                </li>
+                            {% endif %}
+    
+    
+         
+    
+                            
+                            {% if books.has_previous %}
+                                <li class="page-item"><a class="page-link" href="?page={{ books.previous_page_number }}">{{ books.previous_page_number }}</a></li>
+                            {% endif %}
+    
+                            <li class="page-item active" aria-current="page">
+                              <span class="page-link">{{ books.number }}</span>
+                            </li>
+                            
+                            
+                            {% if books.has_next %}
+                                <li class="page-item"><a class="page-link" href="?page={{ books.next_page_number }}">{{ books.next_page_number }}</a></li>
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ books.next_page_number }}">Next</a>
+                                    </li>
+                            {% else %}
+                                <li class="page-item disabled">
+                                    <span class="page-link">Next</span>
+                                </li>
+                            {% endif %}
+    
+    
+                        </ul>
+                    </nav>
+    
+
+
+                </div>
+          </div>
+          {% else %}
+          {% get_books request category as books %}
+            <div class="container">
+              <div class="row row-cols-2">
+                    {% for book in books %}
+                    <div class="cards" style="width: 18rem; margin-left: 30px; margin-top: 30px;">
+                        <img src="{{ book.photo.url }}" class="card-img-top" alt="Фото не загрузилось" style="width: 100%; height: 40vh;">
+                        <div class="card-body">
+                            <h5 class="card-title" style="margin-top: 2vh; color: white;">{{ book.title }}</h5>
+                            <p class="card-text" style="margin-top: 2vh; color: rgb(156, 156, 156);">{{ book.description|truncatechars:70 }}</p>
+                            <div class="flex__center__elements" style="display: flex; justify-content: center; align-items: center;">
+                                <a href="{{ book.get_absolute_url }}" class="btn btn-primary">Подробнее</a>
+                                <a href="{{ book.confrim_book }}" class="btn btn-success" style="margin-left: 15px;">Взять с собой</a>
+                            </div>
+                        </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                
+
+
+            </div>
+        {% endif %}
+    </div>    
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+    {% endblock %}
+    

@@ -1,0 +1,17 @@
+Set-ExecutionPolicy RemoteSigned -Scope Process
+
+{
+  "token_type": "access",
+  "exp": 1674949183,
+  "iat": 1655680723,
+  "jti": "9V6uxNFehb6gu6y",
+  "IsAdmin": true,
+  "count": "32132",
+  "user_id": 1,
+  "nickname": "aliev"
+}
+
+сделать убавления количества запросов
+сделать заддержку отправки запросов
+Сделать собственные permissions
+Написать тесты

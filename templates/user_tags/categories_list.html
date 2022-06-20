@@ -1,0 +1,50 @@
+<style>
+  .nav .nav-pills .flex-column .mb-auto {
+    background-color: wheat;
+  }
+</style>
+
+<div class="d-flex flex-column flex-shrink-0 p-3 text-white" style="width: 280px; background-color: #1d1f21;">
+    <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+      <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"/></svg>
+      <span class="fs-4" style="margin-top: 5vh;">Категории</span>
+    </a>
+    <hr>
+    <ul class="nav nav-pills flex-column mb-auto" style="height: 100vh;">
+
+      {% if selected == 0 %}
+        <li>
+          <a href="#" class="nav-link active text-white">
+          <svg class="bi me-2" width="16" height="16"><use xlink:href="#speedometer2"/></svg>
+          Все категории
+          </a>
+        </li>
+      {% else %}
+        <li>
+          <a href="{% url 'index' %}" class="nav-link text-white">
+          <svg class="bi me-2" width="16" height="16"><use xlink:href="#speedometer2"/></svg>
+          Все категории
+          </a>
+        </li>
+      {% endif %}
+
+      {% for category in categories %}
+        {% if selected == category.pk %}
+            <li>
+                <a href="{{ category.get_absolute_url }}" class="nav-link active text-white">
+                <svg class="bi me-2" width="16" height="16"><use xlink:href="#speedometer2"/></svg>
+                {{ category.name }}
+                </a>
+            </li>
+        {% else %}
+            <li>
+                <a href="{{ category.get_absolute_url }}" class="nav-link text-white">
+                <svg class="bi me-2" width="16" height="16"><use xlink:href="#speedometer2"/></svg>
+                {{ category.name }}
+                </a>
+            </li>
+        {% endif %}
+      {% endfor %}
+      
+    </ul>
+  </div>
