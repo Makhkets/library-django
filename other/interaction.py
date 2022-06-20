@@ -6,16 +6,16 @@ class LibrariesApi:
     def __init__(self):
         self.session = requests.session()
         self.url = "http://127.0.0.1:8000/api/v1/books"
-        self.url_token_info = "http://127.0.0.1:8000/api/auth/token/me"
-        self.token = "Benefix eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjc0OTQ5MTgzLCJpYXQiOjE2NTU2ODA3MjMsImp0aSI6IjlWNnV4TkZlaGI2Z3U2eSIsIklzQWRtaW4iOnRydWUsImNvdW50IjoiMzIxMzIiLCJ1c2VyX2lkIjoxLCJuaWNrbmFtZSI6ImFsaWV2In0.dFRmHHnwuxvPEjzQt1JRPvy1iGw5AG1U5crJutzsS9E"
+        self.url_token_info = "http://127.0.0.1:8000/api/token"
+        self.token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjU2MzAzOTg0LCJpYXQiOjE2NTU3MTQ3ODQsImp0aSI6IjFHTndjeHY4SFhCMEF1ZiIsIklzQWRtaW4iOnRydWUsImNvdW50IjoiMTAwMDAiLCJ1c2VyX2lkIjoxLCJuaWNrbmFtZSI6ImFsaWV2In0.7aYrLKYgOpN_O4wQdMqt97vL7AJYQntISJ6DQJZN2Tk"
 
     def save(self, response: str):
         with open("html.html", "w", encoding="utf-8") as file:
             file.write(response)
 
     def get(self):
-        headers = {"authorization": self.token}
-        response = requests.get(self.url, headers=headers)
+        headers = {"authorization": "Benefix " + self.token}
+        response = requests.get(self.url_token_info, headers=headers)
         pprint(response.text)
         self.save(response.text)
 

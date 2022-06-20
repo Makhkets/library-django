@@ -10,3 +10,8 @@ Set-ExecutionPolicy RemoteSigned -Scope Process
   "user_id": 1,
   "nickname": "aliev"
 }
+
+сделать убавления количества запросов
+сделать заддержку отправки запросов
+Сделать собственные permissions
+Написать тесты

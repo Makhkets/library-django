@@ -2,6 +2,7 @@ import loguru
 from rest_framework import serializers
 
 from libraries.models import Book
+from .models import JWTokens
 
 # class BookSerializers(serializers.Serializer):
 #     title = serializers.CharField(max_length=100)
@@ -15,7 +16,7 @@ from libraries.models import Book
 class BookSerializers(serializers.ModelSerializer):
     class Meta:
         model = Book
-        fields = "__all__"
+        fields = ('title', 'description', 'photo', 'time_create', 'time_update', 'is_published', 'category', 'user')
 
     # def create(self, validated_data):
     #     user = validated_data["user"]
@@ -39,4 +40,9 @@ class BookSerializers(serializers.ModelSerializer):
     #     instance.is_published = validated_data.get("is_published", instance.is_published)
     #     instance.save()
     #     return instance
+
+class JWTSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = JWTokens
+        fields = ('token', 'exp', 'iat', 'jti', 'time_update', 'minutes', 'count', 'isAdmin', 'user')
 

@@ -39,27 +39,3 @@ def generate_jwt(user_id, nickname, minutes, count, IsAdmin=0):
         'user_id': user_id,
         'nickname': nickname,        
     }}
-
-# def read_jwt(token: str):
-#     """reads jwt, validates it and return payload if correct"""
-#     header_data = jwt.get_unverified_header(token)
-#     secret = SECRET_KEY
-#     try:
-#         payload = jwt.decode(token, key=secret, algorithms=[header_data["alg"]])
-#     except ExpiredSignatureError as e:
-#         return False
-#     except InvalidSignatureError as e:
-#         return False
-#
-#     if "exp" not in payload:
-#         return False
-#
-#     if int(datetime.now(tz=TIMEZONE).timestamp()) > payload["exp"]:
-#         return False
-#
-#     payload.pop("iat", None)
-#     payload.pop("exp", None)
-#
-#     return payload
-
-# print(generate_jwt(user_id=1, nickname="benefix", minutes=10000000, count=20, IsAdmin=1))

@@ -1,12 +1,13 @@
 from rest_framework import generics, viewsets
-from rest_framework.decorators import action
+from rest_framework.decorators import action, permission_classes
 from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser, IsAuthenticatedOrReadOnly
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from api.searializers import BookSerializers
+from api.searializers import BookSerializers, JWTSerializers
 
 from libraries.models import Book, Category, User
-from api.permissions import ActionPermissionClassesMixin
+from api.exceptions import MissingTokenException
+from api.permissions import ActionPermissionClassesMixin, IsTokenAuth, AlwaysNotAuth, IsTokenAdminAuth
 from api.models import JWTokens
 
 from loguru import logger as l
@@ -77,17 +78,28 @@ from pprint import pprint
 #     queryset = Book.objects.all()
 #     serializer_class = BookSerializer
 
-class JWTView(APIView):
-    permission_classes = [IsAdminUser]
-    def get(self, request):
-        token = request.headers.get('Authorization').split("Benefix ")[1]
-        response = JWTokens.objects.get(token=token)
-        return Response({"get": "ok"})
+class JWTView(ActionPermissionClassesMixin, viewsets.ModelViewSet):
+    queryset = JWTokens.objects.all()
+    serializer_class = JWTSerializers
+    action_permission_classes = {
+                                                    'create': [IsTokenAdminAuth],
+                                                    'retrieve': [IsTokenAuth],
+                                                    'list': [IsTokenAdminAuth],
+                                                    'update': [IsTokenAuth],
+                                                    'partial_update': [IsTokenAuth],
+                                                    'confirm_email': [IsTokenAuth],
+                                                    'destroy': [AlwaysNotAuth],
+                                }
 
-    def post(self, request):
-        # user_id, nickname, minutes, count, IsAdmin = 0
-        l.success(request.data)
-        return Response({"post": "ok"})
+    def get_queryset(self):
+        token = self.request.headers.get('Authorization').split("Benefix ")[1]
+        jwt = JWTokens.objects.filter(token=token)
+        count = jwt.first().count
+        if count > 0:
+            return jwt
+        else:
+            raise MissingTokenException
+
 
 class BookAPIView(ActionPermissionClassesMixin, viewsets.ModelViewSet):
     queryset = Book.objects.all()
