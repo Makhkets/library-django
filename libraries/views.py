@@ -1,8 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.views.generic import View
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
 
@@ -14,21 +13,36 @@ from libraries.models import *
 from core.settings import BOT_TOKEN, CHAT_ID_ADMIN
 
 # Create your views here.
+from django.contrib.auth import get_user_model
+User = get_user_model()
 
 
-
-def index_libraries(request): 
+def index_libraries(request):
     books = Book.objects.all()
-    
     paginator = Paginator(books, 2)
     page_number = request.GET.get("page")
-    page_obj = paginator.get_page(page_number) 
+    page_obj = paginator.get_page(page_number)
 
     return render(request, "libraries/index.html", {"category": 0})
 
 def category_libraries(request, category):
     categories = Category.objects.filter(pk=category).all()
     return render(request, "libraries/index.html", {"category": category})
+
+@login_required
+def following(request):
+    if request.method == "POST":
+        email = request.POST.get("email")
+        if "@" in email:
+            try:
+                u = Follower.objects.get(user=request.user)
+                u.email = email
+                u.save()
+            except:
+                Follower.objects.create(email=email, user=request.user)
+            return render(request, "libraries/following.html", {"success": "Вы успешно подписались на рассылку"})
+        else: return render(request, "libraries/following.html", {"error": "Неправильный email"})
+    return render(request, "libraries/following.html")
 
 def DetailBook(request, id):
     book = Book.objects.get(id=id, is_published=1)

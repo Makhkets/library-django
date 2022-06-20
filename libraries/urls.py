@@ -14,5 +14,6 @@ urlpatterns = [
     path('contact', contact, name='contact'),
     path('profile/', profile, name="profile"),
     path('admin/', AdminView, name="admin"),
+    path('following/', following, name='following'),
     path('category/<int:category>', category_libraries, name="view_category"),
 ]

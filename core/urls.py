@@ -28,11 +28,14 @@ def redirect_libraries(request):
 urlpatterns = [
     path('', redirect_libraries, name="index"),
     path('admin/', admin.site.urls),
+    path('captcha/', include('captcha.urls')),
+
     path('accounts/login/', LoginUser.as_view(), name='login'),
     path('accounts/register/', RegisterUser.as_view(), name='register'),
     path('accounts/', include('django.contrib.auth.urls')),
+
     path('libraries/', include('libraries.urls')),
-    path('captcha/', include('captcha.urls')),
+    path('api/', include('api.urls'))
 ]
 
 if settings.DEBUG:

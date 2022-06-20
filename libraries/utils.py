@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from django.shortcuts import render, redirect, get_object_or_404, reverse
 from django.http import HttpResponse
 from django.contrib import auth
@@ -7,6 +8,7 @@ from . import utils
 from . import models
 
 from loguru import logger
+User = get_user_model()
 
 class DefaultFormtMixin:
     form = None
@@ -36,6 +38,11 @@ class AccountCreationForm(UserCreationForm):
         self.fields['username'].widget.attrs.update({'placeholder': ('Username')})
         self.fields['password1'].widget.attrs.update({'placeholder': ('Password')})        
         self.fields['password2'].widget.attrs.update({'placeholder': ('Repeat password')})
+
+    class Meta:
+        model = get_user_model()
+        fields = ("username",)
+
 
 class LoginMixin:
     template = None
