@@ -1,14 +1,16 @@
 from rest_framework import generics, viewsets
 from rest_framework.decorators import action, permission_classes
-from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser, IsAuthenticatedOrReadOnly
+from rest_framework.permissions import AllowAny, IsAuthenticated,\
+                                                IsAdminUser
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from api.searializers import BookSerializers, JWTSerializers
 
 from libraries.models import Book, Category, User
-from api.exceptions import MissingTokenException
-from api.permissions import ActionPermissionClassesMixin, IsTokenAuth, AlwaysNotAuth, IsTokenAdminAuth
 from api.models import JWTokens
+from api.exceptions import MissingTokenException
+from api.permissions import ActionPermissionClassesMixin, IsTokenAuth,\
+                            AlwaysNotAuth, IsTokenAdminAuth, IsAuthorPostTokenAuth
 
 from loguru import logger as l
 from pprint import pprint
@@ -84,11 +86,11 @@ class JWTView(ActionPermissionClassesMixin, viewsets.ModelViewSet):
     action_permission_classes = {
                                                     'create': [IsTokenAdminAuth],
                                                     'retrieve': [IsTokenAuth],
-                                                    'list': [IsTokenAdminAuth],
-                                                    'update': [IsTokenAuth],
-                                                    'partial_update': [IsTokenAuth],
-                                                    'confirm_email': [IsTokenAuth],
-                                                    'destroy': [AlwaysNotAuth],
+                                                    'list': [IsTokenAuth],
+                                                    'update': [IsAuthorPostTokenAuth],
+                                                    'partial_update': [IsAuthorPostTokenAuth],
+                                                    'confirm_email': [AllowAny],
+                                                    'destroy': [IsAuthorPostTokenAuth],
                                 }
 
     def get_queryset(self):
@@ -105,13 +107,13 @@ class BookAPIView(ActionPermissionClassesMixin, viewsets.ModelViewSet):
     queryset = Book.objects.all()
     serializer_class = BookSerializers
     action_permission_classes = {
-                                                    'create': [IsAuthenticated],
-                                                    'retrieve': [IsAuthenticated],
-                                                    'list': [IsAuthenticated],
-                                                    'update': [IsAuthenticated],
-                                                    'partial_update': [IsAuthenticated],
-                                                    'confirm_email': [IsAuthenticated],
-                                                    'destroy': [IsAuthenticated],
+                                                    'create': [IsTokenAdminAuth],
+                                                    'retrieve': [IsTokenAuth],
+                                                    'list': [IsTokenAuth],
+                                                    'update': [IsAuthorPostTokenAuth],
+                                                    'partial_update': [IsAuthorPostTokenAuth],
+                                                    'confirm_email': [AllowAny],
+                                                    'destroy': [IsAuthorPostTokenAuth],
                                 }
 
     @action(methods=["get"], detail=True)

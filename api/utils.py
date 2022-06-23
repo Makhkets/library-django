@@ -39,3 +39,6 @@ def generate_jwt(user_id, nickname, minutes, count, IsAdmin=0):
         'user_id': user_id,
         'nickname': nickname,        
     }}
+
+def decode_jwt(token):
+    return jwt.decode(token, options={"verify_signature": False})

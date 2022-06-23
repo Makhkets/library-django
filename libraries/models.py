@@ -31,6 +31,7 @@ class Book(models.Model):
     is_published = models.BooleanField(default=True, verbose_name="Публикация")
     category = models.ForeignKey("Category", on_delete=models.PROTECT, verbose_name="Категории")
     user = models.ManyToManyField(get_user_model(), null=True, blank=True, verbose_name="Пользователь книги")
+    create_user = models.ForeignKey(get_user_model(), on_delete=models.PROTECT, related_name="create_user", verbose_name="Пользователь который добавил книгу")
 
     def __str__(self):
         return self.title
