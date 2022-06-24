@@ -25,7 +25,9 @@ class DefaultFormtMixin:
     def post(self, request):
         f = self.form(request.POST, request.FILES)
         if f.is_valid():
-            f.save()
+            try:
+                f.save(user=request.user)
+            except TypeError: f.save()
             return redirect(self.reverse_url)
         else:
             return HttpResponse(str(f.errors))

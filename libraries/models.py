@@ -31,11 +31,19 @@ class Book(models.Model):
     is_published = models.BooleanField(default=True, verbose_name="Публикация")
     category = models.ForeignKey("Category", on_delete=models.PROTECT, verbose_name="Категории")
     user = models.ManyToManyField(get_user_model(), null=True, blank=True, verbose_name="Пользователь книги")
-    create_user = models.ForeignKey(get_user_model(), on_delete=models.PROTECT, related_name="create_user", verbose_name="Пользователь который добавил книгу")
+
+    create_user = models.ForeignKey(get_user_model(), on_delete=models.PROTECT, related_name="create_user",
+                                                      verbose_name="Пользователь который добавил книгу",
+                                                      blank=True, null=True)
 
     def __str__(self):
         return self.title
-    
+
+    class Meta:
+        ordering = ["-time_update"]
+        verbose_name = "Книга"
+        verbose_name_plural = "Книги"
+
     def get_absolute_url(self):
         return reverse('view_book', kwargs={'id': self.pk})
     def confrim_book(self):
@@ -46,10 +54,6 @@ class Book(models.Model):
         return reverse('confrim_get_book', kwargs={"id": self.pk})
     def notify_book(self):
         return reverse('notify_book', kwargs={"id": self.pk})
-
-    class Meta:
-        verbose_name = "Книга"
-        verbose_name_plural = "Книги"
 
 class Category(models.Model):
     name = models.CharField(max_length=100, db_index=True, verbose_name="Категория")

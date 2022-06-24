@@ -18,15 +18,9 @@ User = get_user_model()
 
 
 def index_libraries(request):
-    books = Book.objects.all()
-    paginator = Paginator(books, 2)
-    page_number = request.GET.get("page")
-    page_obj = paginator.get_page(page_number)
-
     return render(request, "libraries/index.html", {"category": 0})
 
 def category_libraries(request, category):
-    categories = Category.objects.filter(pk=category).all()
     return render(request, "libraries/index.html", {"category": category})
 
 @login_required

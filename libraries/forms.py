@@ -29,7 +29,7 @@ class LoginForm(AuthenticationForm):
 class BookPublishedForm(forms.ModelForm):
     class Meta:
         model = Book
-        fields = ["title", "description", "photo", "category"]
+        fields = ["title", "description", "photo", "category", "create_user"]
 
         widgets = {
             "title": forms.TextInput(attrs={
@@ -40,11 +40,20 @@ class BookPublishedForm(forms.ModelForm):
                 "placeholder": "Описание",
                 "class": "form-control",
             }),
+            "create_user": forms.HiddenInput(attrs={
+                "class": "hidden_input",
+                "name": "hidden_input",
+            }),
         }
+
+    def save(self, user):
+        book = super().save(commit=False)
+        book.create_user = user
+        book.save()
+        return book
 
 class ContactForm(forms.Form):
     content = forms.CharField(max_length=10000, widget=forms.Textarea(attrs={
         "class": "form-control"
     }))
-    
     captcha = CaptchaField()
