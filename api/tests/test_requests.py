@@ -2,11 +2,12 @@ from django.urls import reverse
 from rest_framework.test import APITestCase, APIClient
 from django.contrib.auth import get_user_model
 
-from libraries.models import Book
+from libraries.models import Book, Category
 from api.models import JWTokens
 from api.utils import generate_jwt
 
 from loguru import logger as l
+
 User = get_user_model()
 
 class BookLibrariesTestCase(APITestCase):
@@ -30,30 +31,34 @@ class BookLibrariesTestCase(APITestCase):
             )
             return jwt["token"]
 
-        def add_books():
-            return Book.objects.create(title="ТЕст", description="Описание книги",
+        def add_category():
+            return Category.objects.create(name="Фантастика")
+
+        def add_books(category):
+            return Book.objects.create(title="TEst", description="Описание книги",
                                        photo="images/2022/06/11/kniga_M6ggpqF.jpg",
-                                       category=2, user=self.user, create_user=self.user)
-
-        # title = models.CharField(max_length=100, verbose_name="Заголовок")
-        # description = models.TextField(blank=True, verbose_name="Описание")
-        # photo = models.ImageField(upload_to="images/%Y/%m/%d", verbose_name="Фото")
-        # time_create = models.DateField(auto_now_add=True, verbose_name="Время создании")
-        # time_update = models.DateTimeField(auto_now=True, verbose_name="Время изменения")
-        # is_published = models.BooleanField(default=True, verbose_name="Публикация")
-        # category = models.ForeignKey("Category", on_delete=models.PROTECT, verbose_name="Категории")
-        # user = models.ManyToManyField(get_user_model(), null=True, blank=True, verbose_name="Пользователь книги")
-        #
-        # create_user = models.ForeignKey(get_user_model(), on_delete=models.PROTECT, related_name="create_user",
-        #                                 verbose_name="Пользователь который добавил книгу",
-        #                                 blank=True, null=True)
-
+                                       category=category)
 
         self.user = create_superuser()
+        self.category = add_category()
+        self.book = add_books(category=self.category)
         self.jwt = create_jwt()
         self.client.credentials(HTTP_AUTHORIZATION=f"Benefix {self.jwt}")
 
     def test_get_data(self):
         url = reverse("book-list")
         response = self.client.get(url)
-        l.success(response.data)
+        self.assertEqual(response.json()[0]["title"], "TEst")
+        l.success("Тест | test_get_data | прошел успешно")
+
+    def test_add_book(self):
+        url = reverse("add_book")
+        response = self.client.post(url, data={
+            "title": "Book Test",
+            "description": "Description",
+            "photo": "images/2022/06/11/kniga_M6ggpqF.jpg",
+            "category": 1,
+            "user": [1],
+        })
+
+        l.info(Book.objects.all())
