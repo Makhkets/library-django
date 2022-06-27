@@ -13,7 +13,9 @@ router.register("books", BookAPIView)
 urlpatterns = [
     path('v1/', include(router.urls), name="books_api"),
     path('auth/', include('djoser.urls')),
+
     path('auth/', include('djoser.urls.jwt')),
+
     path('', include(router.urls), name="router_urls")
 ]
 

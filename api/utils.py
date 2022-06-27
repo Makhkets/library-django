@@ -37,7 +37,8 @@ def generate_jwt(user_id, nickname, minutes, count, IsAdmin=0):
         'IsAdmin': IsAdmin,
         'count': count,
         'user_id': user_id,
-        'nickname': nickname,        
+        'nickname': nickname,
+        "minutes": minutes,
     }}
 
 def decode_jwt(token):
