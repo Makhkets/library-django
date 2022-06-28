@@ -130,6 +130,11 @@ class BookAPIView(ActionPermissionClassesMixin, viewsets.ModelViewSet):
     @action(methods=["get"], detail=False)
     def categories(self, request):
         category = Category.objects.all()
-        return Response({"category": [{cat.pk: cat.name} for cat in category]})
+        return Response({"category": [{cat.pk   : cat.name} for cat in category]})
+
+    @action(methods=["post"], detail=False, permission_classes=[IsTokenAdminAuth])
+    def create_book(self, request):
+        l.success(request.data)
+        return Response({"ok": "true"})
 
 

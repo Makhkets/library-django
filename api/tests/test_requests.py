@@ -1,3 +1,4 @@
+from django.core.files.base import ContentFile
 from django.urls import reverse
 from rest_framework.test import APITestCase, APIClient
 from django.contrib.auth import get_user_model
@@ -7,6 +8,7 @@ from api.models import JWTokens
 from api.utils import generate_jwt
 
 from loguru import logger as l
+import requests
 
 User = get_user_model()
 
@@ -27,7 +29,7 @@ class BookLibrariesTestCase(APITestCase):
                 minutes=jwt["encode"]["minutes"],
                 count=jwt["encode"]["count"],
                 user_id=user.pk,
-                isAdmin=1,
+                isAdmin=True,
             )
             return jwt["token"]
 
@@ -52,13 +54,15 @@ class BookLibrariesTestCase(APITestCase):
         l.success("Тест | test_get_data | прошел успешно")
 
     def test_add_book(self):
-        url = reverse("add_book")
+        url = reverse("book-list")
+        photo = requests.get("https://avatars.mds.yandex.net/get-zen_doc/1708012/pub_5e5e77c2170e395c41043f49_5e5e8290ac9a236dd3d946dd/scale_1200").content
         response = self.client.post(url, data={
             "title": "Book Test",
             "description": "Description",
-            "photo": "images/2022/06/11/kniga_M6ggpqF.jpg",
             "category": 1,
             "user": [1],
+            "photo": ContentFile(photo, "image.jpg")
         })
 
-        l.info(Book.objects.all())
+        self.assertEqual(response.data["title"], "Book Test")
+        l.success("Тест | test_add_book | прошел успешно")
