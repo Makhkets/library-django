@@ -1,7 +1,16 @@
+import os
+
 from django.core.files.base import ContentFile
-from django.urls import reverse
 from rest_framework.test import APITestCase, APIClient
+from django.urls import reverse
+import django.test
+
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "core.settings")
+import django
+django.setup()
+
 from django.contrib.auth import get_user_model
+User = get_user_model()
 
 from libraries.models import Book, Category
 from api.models import JWTokens
@@ -10,7 +19,17 @@ from api.utils import generate_jwt
 from loguru import logger as l
 import requests
 
-User = get_user_model()
+
+# import pytest
+# def sum(a,b):
+#     return a + b
+#
+# def test_sum():
+#     result = sum(5, 3)
+#     assert result == 9
+
+
+
 
 class BookLibrariesTestCase(APITestCase):
     def setUp(self) -> None:
