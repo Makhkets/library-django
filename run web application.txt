@@ -1,0 +1,3 @@
+celery -A core worker -l INFO
+celery -A core flower --port=5555
+python manage.py runserver

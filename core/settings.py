@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'djoser',
     'captcha',
     'pytest',
+    'django_celery_beat',
 
     'libraries',
     'api',
@@ -146,6 +147,10 @@ STATICFILES_DIRS = [
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
+CELERY_BROKER_URL = "redis://127.0.0.1:6379/0"
+CELERY_RESULT_BACKEND = "redis://127.0.0.1:6379/0"
+CELERY_BEAT_SCHEDULER='django_celery_beat.schedulers:DatabaseScheduler'
+
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 EMAIL_HOST = 'smtp.gmail.com'
@@ -154,15 +159,22 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = "rahimaliev999@gmail.com"
 EMAIL_HOST_PASSWORD = "zgsayedpwnwpbfjn"
 
+REDIS_HOST = 'localhost'
+REDIS_PORT = 6379
 
 MEDIA_URL = "/media/"
+
 LOGIN_REDIRECT_URL = 'index'
 LOGIN_URL = '/accounts/login/'
 AUTH_USER_MODEL = 'libraries.User'
+
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
 BOT_TOKEN = "5381642982:AAH1kYcy9WA6wCrHCrunr4Yf-O_zXrvSqoo"
 CHAT_ID_ADMIN = "5285375327"
+
 RECAPTCHA_PUBLIC_KEY = 'MyRecaptchaKey123'
 RECAPTCHA_PRIVATE_KEY = 'MyRecaptchaPrivateKey456'
 
@@ -210,3 +222,14 @@ SIMPLE_JWT = {
     'SLIDING_TOKEN_LIFETIME': timedelta(days=30),
     'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
 }
+
+# CELERY_BEAT_SCHEDULE = {
+#       'add-every-30-seconds': {
+#         'task': 'myapp.tasks.add',
+#         'schedule': 30.0,
+#         'args': (16, 16),
+#         'options': {
+#             'expires': 15.0,
+#         },
+#     },
+# }
